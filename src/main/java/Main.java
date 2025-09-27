@@ -20,8 +20,8 @@ public class Main {
             boolean isHeld = false;
             long nextReleaseTime = 0;
             long nextClickTime = 0;
-            int delay = 390;
-            int randomizer = 15;
+            long delay = 390;
+            int randomizer = 10;
             int cooldown = 30;
 
             while(enabled) {
@@ -45,12 +45,24 @@ public class Main {
                     }
                     nextClickTime = currentTime;
                 }
+                while(keyBind.configMode&&!keyBind.wasPressed){
+                    isHeld = true;
+                    robot.mousePress(MouseEvent.BUTTON1_DOWN_MASK);
+                    delay = System.currentTimeMillis() - currentTime;
+                    try{
+                        Thread.sleep(1);
+                    }
+                    catch (InterruptedException e){
+                        System.out.println("Failed to set thread to sleep in config mode!");
+                    }
+                }
                 try{
                     Thread.sleep(1);
                 }
                 catch (InterruptedException e){
                     System.out.println("Failed to set thread to sleep!");
                 }
+
             }
         }).start();
     }

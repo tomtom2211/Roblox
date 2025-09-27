@@ -11,6 +11,7 @@ public class KeyBind implements NativeKeyListener {
             try {
                 Main.enabled = !Main.enabled;
                 GlobalScreen.unregisterNativeHook();
+                System.out.println("Successfully stopped the program!");
             } catch (NativeHookException nativeHookException) {
                 nativeHookException.printStackTrace();
             }
