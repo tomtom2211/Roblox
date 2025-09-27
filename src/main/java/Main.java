@@ -17,45 +17,39 @@ public class Main {
         GlobalScreen.addNativeKeyListener(keyBind);
 
         new Thread(() -> {
-            boolean isClicking = false;
+            boolean isHeld = false;
             long nextReleaseTime = 0;
             long nextClickTime = 0;
+            int delay = 390;
+            int randomizer = 15;
+            int cooldown = 30;
 
-            while (enabled) {
-                long now = System.currentTimeMillis();
-
+            while(enabled) {
+                long currentTime = System.currentTimeMillis();
                 if (keyBind.wasPressed) {
-                    // Time to start a new click
-                    if (!isClicking && now >= nextClickTime) {
+                    if (!isHeld && currentTime >= nextClickTime) {
                         robot.mousePress(MouseEvent.BUTTON1_DOWN_MASK);
-                        isClicking = true;
-
-                        // Random hold time: 450-550 ms
-                        nextReleaseTime = now + 400 + random.nextInt(51);
+                        isHeld = true;
+                        nextReleaseTime = currentTime + delay + random.nextInt(randomizer);
                     }
-
-                    // Time to release the click
-                    if (isClicking && now >= nextReleaseTime) {
+                    if (isHeld && currentTime >= nextReleaseTime) {
                         robot.mouseRelease(MouseEvent.BUTTON1_DOWN_MASK);
-                        isClicking = false;
-
-                        // Random delay before next click: 480-520 ms
-                        nextClickTime = now + 430 + random.nextInt(41);
+                        isHeld = false;
+                        nextClickTime = currentTime + delay + cooldown + random.nextInt(randomizer);
                     }
-                } else {
-                    // Release mouse immediately if key is not pressed
-                    if (isClicking) {
-                        robot.mouseRelease(MouseEvent.BUTTON1_DOWN_MASK);
-                        isClicking = false;
-                    }
-                    nextClickTime = now; // reset next click
                 }
-
-                try {
-                    Thread.sleep(1); // tiny sleep to reduce CPU usage
-                } catch (InterruptedException ignored) {}
-                if(keyBind.configMode){
-
+                else{
+                    if(isHeld){
+                        robot.mouseRelease(MouseEvent.BUTTON1_DOWN_MASK);
+                        isHeld = false;
+                    }
+                    nextClickTime = currentTime;
+                }
+                try{
+                    Thread.sleep(1);
+                }
+                catch (InterruptedException e){
+                    System.out.println("Failed to set thread to sleep!");
                 }
             }
         }).start();
