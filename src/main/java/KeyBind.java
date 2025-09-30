@@ -6,6 +6,7 @@ import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 public class KeyBind implements NativeKeyListener {
     boolean wasPressed = false;
     boolean configMode = false;
+    boolean fullMacro = false;
     public void nativeKeyPressed(NativeKeyEvent e) {
         if (e.getKeyCode() == NativeKeyEvent.VC_ESCAPE){
             try {
@@ -15,14 +16,16 @@ public class KeyBind implements NativeKeyListener {
             } catch (NativeHookException nativeHookException) {
                 nativeHookException.printStackTrace();
             }
-            //System.out.println("Key was wasPressed!");
-            //System.out.println(Main.enabled);;
         }
         if(e.getKeyCode() == NativeKeyEvent.VC_X){
             wasPressed = !wasPressed;
         }
         if(e.getKeyCode() == NativeKeyEvent.VC_C){
             configMode = !configMode;
+        }
+        if(e.getKeyCode() == NativeKeyEvent.VC_F){
+            System.out.println("Toggling full macro!");
+            fullMacro = !fullMacro;
         }
     }
 }
