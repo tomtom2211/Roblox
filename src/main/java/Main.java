@@ -7,19 +7,21 @@ import java.awt.image.BufferedImage;
 
 public class Main {
     public static boolean enabled = true;
-
+    public static int xLoc = 521;
+    public static int yLoc = 635;
+    public static Rectangle detectionRegion = new Rectangle(xLoc,yLoc,5,5);
     public static void main(String[] args) throws AWTException, NativeHookException {
         KeyBind keyBind = new KeyBind();
         Robot robot = new Robot();
         GlobalScreen.registerNativeHook();
         GlobalScreen.addNativeKeyListener(keyBind);
-        Rectangle detectionRegion = new Rectangle(1536,610,50,30);
-        int width = detectionRegion.width;
-        int height = detectionRegion.height;
         new Thread(() -> {
+            int width = detectionRegion.width;
+            int height = detectionRegion.height;
             while(enabled) {
                 if (keyBind.wasPressed) {
                     BufferedImage screenshot = robot.createScreenCapture(detectionRegion);
+                    //System.out.println(xLoc + " " + yLoc);
                     for(int x = 0; x < width ; x++){
                         for(int y = 0; y < height ; y++){
                             int rgb = screenshot.getRGB(x,y);
@@ -29,6 +31,16 @@ public class Main {
                             }
                         }
                     }
+                }
+                if (keyBind.configMode){
+                    try{
+                        xLoc = MouseInfo.getPointerInfo().getLocation().x;
+                        yLoc = MouseInfo.getPointerInfo().getLocation().y;
+                        detectionRegion = new Rectangle(xLoc,yLoc,5,5);
+                        System.out.println(xLoc + " " + yLoc);
+                        Thread.sleep(1000);
+                    }
+                    catch(Exception ignored){}
                 }
                 try{
                     Thread.sleep(1);
