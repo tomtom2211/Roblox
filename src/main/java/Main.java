@@ -11,7 +11,6 @@ public class Main {
     public static void main(String[] args) throws AWTException, NativeHookException {
         KeyBind keyBind = new KeyBind();
         Robot robot = new Robot();
-        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         GlobalScreen.registerNativeHook();
         GlobalScreen.addNativeKeyListener(keyBind);
         Rectangle detectionRegion = new Rectangle(1536,610,50,30);

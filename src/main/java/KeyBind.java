@@ -6,7 +6,6 @@ import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 public class KeyBind implements NativeKeyListener {
     boolean wasPressed = false;
     boolean configMode = false;
-    boolean fullMacro = false;
     public void nativeKeyPressed(NativeKeyEvent e) {
         if (e.getKeyCode() == NativeKeyEvent.VC_ESCAPE){
             try {
