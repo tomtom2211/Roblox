@@ -19,13 +19,10 @@ public class KeyBind implements NativeKeyListener {
         }
         if(e.getKeyCode() == NativeKeyEvent.VC_X){
             wasPressed = !wasPressed;
+            System.out.println("Toggled the helper to: " + wasPressed);
         }
         if(e.getKeyCode() == NativeKeyEvent.VC_C){
             configMode = !configMode;
-        }
-        if(e.getKeyCode() == NativeKeyEvent.VC_F){
-            System.out.println("Toggling full macro!");
-            fullMacro = !fullMacro;
         }
     }
 }
